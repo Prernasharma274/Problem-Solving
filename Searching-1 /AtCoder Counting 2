@@ -1,0 +1,31 @@
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+    int p,q;
+    cin>>p>>q;
+    vector<int>v(p);
+    for(int i=0;i<p;i++){
+        cin>>v[i];
+    }
+    vector<int>vc(q);
+    for(int i=0;i<q;i++)
+        cin>>vc[i];
+    sort(v.begin(),v.end());
+    int a=v.size();
+    for(int i=0;i<q;i++){
+        int low=0;
+        int high=p-1;
+        int index=a;
+        while(low<=high){
+            int mid=low+high/2;
+           if(v[mid]>=vc[i]){
+            index=mid;
+                high=mid-1; 
+            }
+            else
+                low=mid+1;
+        }
+        cout<<a-index<<endl;
+    }
+    return 0;
+}
