@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int singleNonDuplicate(vector<int>& nums) {
+        int low=0;
+        int high=nums.size()-1;
+        int mid=(low+high)/2;
+        while(low<=high)
+        {
+            if(low==high)//single element
+            return nums[low];
+            if(mid%2==0)
+            {
+                //Even
+                if(nums[mid]==nums[mid+1])
+                low=mid+2;
+                else
+                 high=mid;
+            }
+            else
+            {
+                //Odd
+                if(nums[mid-1]==nums[mid])
+                low=mid+1;
+                else
+                high=mid-1; 
+            }
+            mid=(high+low)/2;
+        }
+        return -1;
+    }
+};
