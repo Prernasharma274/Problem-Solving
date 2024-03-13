@@ -1,0 +1,47 @@
+bool possi(vector<int> &boards, int k, int mid){
+    int pCount=1;
+    int bsum =0;
+    int n=boards.size();
+    for(int i=0;i<n;i++)
+    {
+        if(bsum+boards[i]<=mid)
+        {
+          bsum +=boards[i];
+        }
+        else
+        {
+             pCount++;
+            if( pCount> k||boards[i]>mid)
+                return false;
+         bsum =boards[i];
+        }
+
+    }
+    return true;
+}
+int findLargestMinDistance(vector<int> &boards, int k)
+
+{
+   int low=0,sum =0,ans=-1;
+   for(int i=0;i<boards.size();i++)
+    sum+= boards[i];
+   int high=sum;
+
+   int mid=(low+high)/2;
+
+   while(low<=high)
+   {
+       if (possi(boards,k,mid) 
+       {
+        ans= mid;
+        high=mid-1;
+       }
+
+       else
+        high=mid+1;
+       mid=(low+high)/2;
+   }
+
+   return ans;
+
+}
