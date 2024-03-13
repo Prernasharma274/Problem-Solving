@@ -1,0 +1,33 @@
+bool possi(vector<int>&v,int s,int k)
+{
+    int w=0;
+    for(int i=0;i<mid;i++)
+        w+=arr[i];
+    if(w!=s)
+        return 0;
+    int st=0;
+    for(int j=mid;j<v.size();j++)
+    {
+        w=w-v[st++]+[j];
+        if(w!=s)
+          return 0;
+    }
+    return 1;
+}
+int find(vector<int>v,int s)
+{
+    int low=0,high=v.size();
+    int result=0;
+    while(low<=high)
+    {
+        int mid=(high+low)/2;
+        if(possi(v,s,mid))
+        {
+            result=mid;
+            low=mid+1;
+        }
+        else
+            high=mid-1;
+    }
+    return result; 
+}
