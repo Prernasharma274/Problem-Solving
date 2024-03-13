@@ -1,0 +1,28 @@
+class Solution {
+private:
+    bool isValid(int penalty,vector<int>&nums,int maxOp)
+    {
+        int temp=0;
+        for(int i=0;i<nums.size();i++)
+        {
+            temp+=(nums[i]-1)/penalty;
+        }
+        return (temp<=maxOp);
+    }
+public:
+    int minimumSize(vector<int>& nums, int maxOperations) {
+        int low=1;
+        int high=INT_MIN;
+        for(int i=0;i<nums.size();i++)
+         high=max(high,nums[i]);
+        while(low<=high)
+        {
+            int mid=(high+low)/2;
+            if(!isValid(mid,nums,maxOperations))
+                low=mid+1;
+            else
+                high=mid-1;
+        }
+        return low;
+    }
+};
