@@ -1,0 +1,31 @@
+int maxNoBooks(vector<int>& A, vector<int>& B, int N, int M, int K)
+{
+    long int sum=0;
+    int ct=0;
+    int i=0,j=0;
+    while(i<N && j<M)
+    {
+        if(A[i]<=B[j])
+            ans+=A[i++];
+        else
+            ans+=B[j++];
+        if(ans>K)
+             return ct;
+        ct++;
+    }
+    while(i<N)
+    {
+        ans+=A[i++];
+        if(ans>K)
+            return ct;
+        ct++;
+    }
+    while(j<M)
+    {
+        ans+=B[j++];
+        if(ans>k)
+            return ct;
+        ct++;
+    }
+    return ct;
+}
