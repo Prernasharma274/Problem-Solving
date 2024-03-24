@@ -1,0 +1,24 @@
+class Solution
+{
+    public:
+    vector<int> topView(Node *root)
+    {
+        //Your code here
+        map<int,int>mapp;
+        queue<pair<Node*,int>>q;
+        if(root==NULL) return;
+        q.push({root,0});
+        while(!q.empty())
+        {
+            Node* top=q.front().first;
+            int h=q.front().second;
+            q.pop();
+            if(!mapp[h]) mapp[h]=top->data;
+            if(top->left) q.push({top->left,h-1});
+            if(top->right) q.push({top->right,h-1});
+        }
+        for(auto x:mapp) 
+        cout<<x.second<<" ";   
+    }
+
+};
