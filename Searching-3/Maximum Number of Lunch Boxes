@@ -1,0 +1,49 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+bool possibleToMakeMixLunchBoxes(map<int,int> freqArr,int mid,int maxItem)
+{
+    int totalItemPerLunchBox=0;
+    for(auto freq:freqArr)
+    {
+        int currFoodItemPerLunchBox=freq.second/mid;
+        totalItemPerLunchBox+=currFoodItemPerLunchBox;
+    }
+    return (totalItemPerLunchBox>=maxItem);
+}
+
+int maxLunchBoxes(vector<int> foodItems,int maxItem)
+{
+    map<int,int> freqArr;
+    int high=-1;
+    for(auto item:foodItems)
+    {
+        freqArr[item]++;
+        if(freqArr[item]>high )
+            high=freqArr[item];
+    }
+    int low=0 ;
+    int ans=0;
+    while(low<=high)
+    {
+        int mid=high-(high-low)/2;
+        if(possibleToMakeMixLunchBoxes(freqArr,mid,maxItem))
+        {
+            ans=mid;
+            low=mid+1;
+        }
+        else
+            high=mid-1;
+    }
+    return ans;
+}
+
+int main() {
+    int num,m;
+    cin>>num>>m;
+    vector<int> v(n);
+    for(int i=0; i<num; i++)
+        cin>>v[i];
+    cout<<maxLunchBoxes(v,m);
+    return 0;
+}
