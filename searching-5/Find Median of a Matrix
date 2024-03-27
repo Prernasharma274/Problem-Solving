@@ -1,0 +1,29 @@
+int Solution::findMedian(vector<vector<int> > &A) {
+    int low= INT_MAX,high = INT_MIN;
+    int i;
+    int n11 = A.size();
+    int n12 = A[0].size();
+    int k = (n11*n12+1)/2;
+    for(i=0; i<n11; i++)
+    {
+        if(A[i][0] < low)
+            low = A[i][0];
+        if(A[i][n12-1]> high)
+            high = A[i][n12 -1];
+    }
+    int ans = low;
+    while(low < high)
+    {
+        int ct = 0;
+        int mid = low + (high - low)/2;
+        for(i=0; i<n11; i++)
+            ct += upper_bound(A[i].begin(),A[i].end(),mid) - A[i].begin();
+        if(ct < k){
+            low = mid +1;
+            ans = low;
+        }
+        else
+            high = mid;
+    }
+    return ans;
+}
