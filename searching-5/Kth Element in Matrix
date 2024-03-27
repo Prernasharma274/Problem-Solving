@@ -1,0 +1,24 @@
+int kthSmallest(int matrix[MAX][MAX], int n, int k)
+{
+    int low = matrix[0][0];
+    int high = matrix[n-1][n-1];
+    int ans=low;
+    while(low<=high)
+    {
+        int ct = 0;
+        int mid = low + (high-low)/2;
+        for(int i=0; i<n; i++)
+        {
+            auto it = upper_bound(matrix[i], matrix[i]+n,mid);
+            ct += (it - matrix[i]);
+        }
+        if(ct<k)
+        {
+            low = mid+1;
+            ans = low;
+        }
+        else
+            high=mid-1;
+    }
+    return ans;
+}
