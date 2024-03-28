@@ -1,10 +1,9 @@
 class Solution {
+  public:
     bool path(TreeNode* node,int target, string& s)
     {
-        if(node==NULL)
-            return 0;
-        if(node->val==target)
-            return 1;
+        if(node==NULL) return 0;
+        if(node->val==target) return 1;
         else if(path(node->left,target,s))
         {
             s.insert(0,"L");
@@ -17,7 +16,6 @@ class Solution {
         }
         return 0;
     }
-public:
     string getDirections(TreeNode* root, int startValue, int destValue) {
         int s;
         string sv,dv; 
