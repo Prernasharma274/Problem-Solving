@@ -1,0 +1,15 @@
+ bool path(TreeNode* node,int B,vector<int>& ans)
+ {
+    if(node==NULL)
+        return 0;
+    ans.push_back(node->val);
+    if(node->val == B||path(node->left,B,ans)||path(node->right,B,ans))
+        return 1;
+    ans.pop_back();
+    return 0; 
+ }
+vector<int> Solution::solve(TreeNode* A, int B) {
+    vector<int> v;
+    trace_path(A,B,v);
+    return v;
+}
