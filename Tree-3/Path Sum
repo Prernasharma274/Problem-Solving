@@ -1,16 +1,21 @@
 class Solution {
-    bool check(TreeNode* root,int target,int currsum)
-    {
-        if(root==NULL)
-            return 0;
-        currsum+=root->val;
-        if(root->left==NULL && root->right==NULL)
-            if(currsum==target)
-                return 1;
-        return check(root->left,target,currsum)||check(root->right,target,currsum);
-    }
 public:
+    bool flag = false;
+    void dfs(TreeNode* root, int targetSum)
+    {
+      if(root==NULL) return;
+      int sum=0;
+      sum+=root->val;
+      if(sum==targetSum && !root->left && !root->right)
+      {
+          flag = true;
+          return;
+      }
+      dfs(root->left,targetSum);
+      dfs(root->right,targetSum);
+    }
     bool hasPathSum(TreeNode* root, int targetSum) {
-        return check(root,targetSum,0);
+        dfs(root,targetSum);
+        return flag;
     }
 };
