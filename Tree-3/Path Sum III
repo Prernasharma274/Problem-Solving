@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int ans=0
+    void func(TreeNode *root,long long int sum)
+    {
+        if(root==NULL) return;
+        if(root->val==sum) ++ans;
+        func(root->left,sum-(root->val));
+        func(root->right,sum-(root->val));
+    }
+    int pathSum(TreeNode* root,long long int targetSum) {
+        if(root==NULL) return 0;
+        func(root,targetSum);
+        pathSum(root->left,targetSum);
+        pathSum(root->right,targetSum);
+        return ans;
+    }  
+};
