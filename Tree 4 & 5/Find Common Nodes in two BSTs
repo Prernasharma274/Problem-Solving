@@ -1,0 +1,25 @@
+class Solution
+{
+    public:
+    void func(Node *root,map<int,int>&m,vector<int>&ans)
+    {
+        if(root==NULL) return;
+        func(root->left,m,ans);
+        if(m.find(root->data)!=m.end())
+          ans.push_back(root->data);
+         else
+         m.insert({root->data,1});
+         func(root->right,m,ans);
+    }
+    //Function to find the nodes that are common in both BST. 
+    vector <int> findCommon(Node *root1, Node *root2)
+    {
+     //Your code here
+     map<int,int>m;
+     vector<int>ans;
+     if(root1==NULL && root2==NULL) return ans;
+     func(root1,m,ans);
+     func(root2,m,ans);
+     return ans;
+    }
+};
