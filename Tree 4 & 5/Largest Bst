@@ -1,0 +1,35 @@
+class Solution{
+    public:
+    class Info
+    {
+      public:
+        int maxi,mini,size;
+        bool isbst;
+    };
+    Info func(Node *root,int &maxsize)
+    {
+        if(root==NULL) return {INT_MIN,INT_MAX,true,0};
+        Info left=func(root->left,maxsize);
+        Info right=func(root->right,maxsize);
+        Info cur;
+        cur.size=left.size+right.size+1;
+        cur.maxi=max(root->data,right.maxi);
+        cur.mini=min(root->data,left.mini);
+        if(left.isbst && right.isbst && (root->data>left.maxi) && (root->data<right.mini))
+            cur.isbst=true;
+        else
+            cur.isbst=false;
+        if(cur.isbst)
+            maxsize=max(maxsize,cur.size);
+        return cur;
+    }
+    /*You are required to complete this method */
+    // Return the size of the largest sub-tree which is also a BST
+    int largestBst(Node *root)
+    {
+        //Your code here
+        int maxsize=0;
+        Info temp=func(root,maxsize);
+        return maxsize;
+    }
+};
