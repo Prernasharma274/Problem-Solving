@@ -1,0 +1,12 @@
+class Solution {
+    bool func(TreeNode* root, long min, long max)
+    {
+        if(root==NULL) return true;
+        if (root->val<= min || root->val>= max) return false;
+        return func(root->left,min,root->val)  && func(root->right,root->val,max);
+    }
+public:
+    bool isValidBST(TreeNode* root) {
+        return func(root,LONG_MIN,LONG_MAX);
+    }
+};
