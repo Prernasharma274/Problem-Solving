@@ -1,0 +1,73 @@
+struct Node {
+    Node *links[26];
+    int cnt=0;
+
+    bool containskey(char ch)
+    {
+        return (links[ch-'a']!=NULL);
+    }
+    void put(char ch,Node* node)
+    {
+        links[ch-'a']=node;
+    }
+    Node* get(char ch)
+    {
+        return links[ch-'a'];
+    }
+    void count()
+    {
+        cnt++;
+    }
+    int counter()
+    {
+        return cnt;
+    }
+};
+class Solution {
+private:
+    Node *root;
+public:
+    Solution()
+    {
+        root=new Node();
+    }
+    void insert(string word)
+    {
+        Node* node=root;
+        for(int i=0;i<word.size();i++)
+        {
+            if(!node->containskey(word[i]))
+            {
+                node->put(word[i], new Node());
+            }
+            node=node->get(word[i]);  
+            node->count(); 
+        }
+    }
+    int prefixSum(string word)
+    {
+        Node* node=root;
+        int score=0;
+        for(int i=0;i<word.size();i++)
+        {
+            node=node->get(word[i]);
+            score+=node->counter();
+        }
+        return score;
+    }
+
+    vector<int> sumPrefixScores(vector<string>& words) {
+        int n=words.size();
+        for(int i=0;i<n;i++)
+        {
+            insert(words[i]);
+        }
+        vector<int>ans;
+        for(int i=0;i<n;i++)
+        {
+            int score=prefixSum(words[i]);
+            ans.push_back(score);
+        }
+        return ans;
+    }
+};
