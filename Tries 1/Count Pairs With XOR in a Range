@@ -1,0 +1,84 @@
+class Solution {
+public:
+struct Node{
+    Node* links[2];
+    int cnt=0;
+    void put(int ind,Node* node)
+    {
+        links[ind]=node;
+    }
+    bool containskey(int ind)
+    {
+        return links[ind]!=NULL;
+    }
+    Node* get(int ind)
+    {
+        return links[ind];
+    }
+    void counter()
+    {
+        cnt++;
+    }
+    int count()
+    {
+        return cnt;
+    }
+};
+class Trie
+{
+    public:
+    Node * root;
+      Trie()
+      {
+       root=new Node();
+      }
+      void insert(int num)
+      {
+          Node* node=root;
+          for (int i=14;i>=0;i--)
+          {
+              int bit=((num>>i)&1);
+              if (!node->containskey(bit))
+              {
+                 node->put(bit,new Node());
+              }
+              node=node->get(bit);
+              node->counter();
+          }
+      }
+      int getcount(Node* root)
+      {
+          if (root==NULL) return 0;
+          return root->count();
+      }
+      int func(Node* root,int index,int high,int val)
+      {
+          if (root==NULL) return 0;
+           if (index<0) return root->count();
+          int valBit=((val>>index)&1);
+          int highBit=((high>>index)&1);
+          if(valBit==1)
+          {
+            if (highBit==1) return func(root->get(0),index-1,high,val) + getcount(root->get(1));
+            else return func(root->get(1),index-1,high,val);
+          }
+          else
+          {
+             if (highBit==1) return func(root->get(1),index-1,high,val)+getcount(root->get(0));
+             else return func(root->get(0),index-1,high,val);
+          }
+      }
+
+};
+    int countPairs(vector<int>& nums, int low, int high) {
+        int ans=0;
+        Trie * trie=new Trie();
+        for (auto & it:nums)
+        {
+           ans+=trie->func(trie->root,14,high,it);
+           ans-=trie->func(trie->root,14,low-1,it);
+           trie->insert(it);
+        } 
+        return ans;
+    }
+};
