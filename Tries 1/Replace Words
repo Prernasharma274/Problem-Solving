@@ -1,0 +1,94 @@
+struct Node
+{
+ Node* links[26];
+ bool flag=false;
+ bool containskey(char ch)
+ {
+    return links[ch-'a']!=NULL;
+ }
+void put(char ch,Node* node)
+ {
+    links[ch-'a']=node;
+ }
+ Node* get(char ch)
+ {
+    return links[ch-'a'];
+ }
+ void setflag()
+ {
+    flag=true;
+ }
+ bool getflag()
+ {
+    return flag;
+ }
+};
+class Trie
+{
+    Node* root;
+    public:
+    Trie(){
+    root=new Node();
+}
+  void insert(string word)
+ {
+    Node* node=root;
+    for(int i=0;i<word.size();i++)
+    {
+        if(!node->containskey(word[i]))
+        {
+            node->put(word[i],new Node());
+        }
+        node=node->get(word[i]);
+    }
+    node->setflag();
+ }
+
+ void search(string word,string& ans)
+ {
+    Node* node=root;
+    string str="";
+    for(int i=0;i<word.size();i++)
+    {
+        if(!node->containskey(word[i]))
+        {
+            str=word;
+            break;
+        }
+        else
+        {
+            str+=word[i];
+            node=node->get(word[i]);
+            if(node->getflag())
+            {
+                break;
+            }
+        }
+    }  
+    ans+=str;
+ }
+};
+class Solution {
+public:
+string replaceWords(vector<string>& dictionary, string sentence) {
+    string ans="";
+    Trie o;
+    for(int i=0;i<dictionary.size();i++)
+    {
+        o.insert(dictionary[i]);
+    }
+    for(int i=0;i<sentence.size();i++)
+       {
+        string word="";
+        while(i<sentence.size() && sentence[i]!= ' ')
+        {
+            word+=sentence[i];
+            i++;
+        }
+        o.search(word,ans);
+        if(i>=sentence.size()-1) break;
+        ans+=' ';
+    }  
+    return ans;
+}
+};
