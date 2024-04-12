@@ -1,0 +1,74 @@
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+class TrieNode {
+public:
+    TrieNode* children[26];
+    bool isEnd;
+    vector<string>commonPrefixNames;
+
+    TrieNode() 
+    {
+        isEnd = false;
+        for (int i=0;i<26;i++)  
+        {
+            children[i]=NULL;
+        }
+    }
+};
+void insertIntoTrie(TrieNode* root,const string& name) 
+{
+    TrieNode* node=root;
+
+    for (char ch:name) 
+    {
+        int index=ch-'a';
+        if (node->children[index] == NULL) 
+        {
+            node->children[index]=new TrieNode();
+        }
+        node = node->children[index];
+        node->commonPrefixNames.push_back(name);
+    }
+
+    node->isEnd = true;
+}
+
+void query(TrieNode* root) 
+{
+    TrieNode* node=root;
+    string input;
+    while (true) {
+        cout<<"Enter a character: ";
+        cin>>input;
+        if(input=="*") 
+        {
+            break;
+        }
+        int index=input[0]-'a';
+        if (node->children[index]==NULL) 
+        {
+            cout<<"No names available with this prefix"<<endl;
+            break;
+        }
+        node = node->children[index];
+        for (const string& name : node->commonPrefixNames) 
+        {
+            cout<<name<<" ";
+        }
+        cout<<endl;
+    }
+}
+int main() {
+    string names[]={"ayush","ayushi","vihan","vivan","alok","ayan"};
+    TrieNode* root=new TrieNode();
+
+    for (const string& name : names) 
+    {
+        insertIntoTrie(root, name);
+    }
+    query(root);
+    return 0;
+}
