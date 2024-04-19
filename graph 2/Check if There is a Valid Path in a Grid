@@ -1,0 +1,38 @@
+class Solution 
+{
+public:
+    vector<pair<int,int>> directions={{-1,0},{1,0},{0,1},{0,-1}};
+    bool f(vector<vector<int>> &g, int r, int c)
+    {
+        int rows=g.size(), cols=g[0].size();
+        if(r<0 || c<0 || r>=rows || c>=cols || !g[r][c]) return false;
+        if(r==rows-2 && c==cols-2) return true;
+        g[r][c]=0;
+        bool ans=false;
+        for(auto it: directions)
+        {
+            int dr=r+it.first, dc=c+it.second;
+            ans=ans || f(g,dr,dc);
+        }
+        return ans;
+    }
+    bool hasValidPath(vector<vector<int>>& grid) 
+    {
+        int m=grid.size(), n=grid[0].size();
+        vector<vector<int>> g(m*3, vector<int> (n*3,0));
+        for(int x=0; x<m; x++)
+        {
+            for(int y=0; y<n; y++)
+            {
+                int s=grid[x][y];
+                int r=x*3+1, c=y*3+1;
+                g[r][c]=1;
+                g[r][c-1]=(s==1 || s==3 || s==5);
+                g[r][c+1]=(s==1 || s==4 || s==6);
+                g[r-1][c]=(s==2 || s==5 || s==6);
+                g[r+1][c]=(s==2 || s==3 || s==4);
+            }
+        }
+        return f(g,1,1);
+    }
+};
