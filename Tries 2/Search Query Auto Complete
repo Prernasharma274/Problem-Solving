@@ -1,0 +1,74 @@
+struct TrieNode
+   {
+       TrieNode*child[100];
+       vector<int>v;
+       TrieNode()
+       {
+           for(int i=0;i<100;i++)
+               child[i]=NULL;
+       }
+   };
+   TrieNode*root=new TrieNode();
+   void insert(string sen,int f)
+   {
+       TrieNode*curr=root;
+       for(int i=0;i<sen.size();i++)
+       {
+           if(!curr->child[sen[i]-' '])
+              curr->child[sen[i]-' ']=new TrieNode();
+              curr=curr->child[sen[i]-' '];
+              if(curr->v.size()<3)
+               {
+                   curr->v.push_back({f,sen});
+                   sort(curr->v.begin(),curr->v.end());
+               }
+              else
+              {   
+                  sort(curr->v.begin(),curr->v.end());
+                  if(curr->v[0].first<f)
+                      curr->v[0]={f,sen};
+                  
+                  else if(curr->v[0].first==f)
+                  {
+                      if(lexicographical_compare(curr->v[0].second.begin(),curr->v[0].second.end(),sen.begin(),sen.end()))
+                      {
+                          curr->v[0]={f,sen};
+                      }
+                  }
+              }
+       }
+       
+   }
+   unordered_map<string,int>m;
+   AutoCompleteSystem(vector<string>& s, vector<int>& times) 
+   {  
+       for(int i=0;i<s.size();i++)
+       {   
+           insert(s[i],times[i]);
+           m[s[i]]=times[i];
+       }
+   }
+   TrieNode*move=root;
+   string str="";
+   vector<string> input(char c) 
+   { 
+     if(c=='#')
+     {
+         if(m.find(str)==m.end())
+         insert(str,1);
+         else
+         insert(str,m[str]+1);
+         move=root;
+         str="";
+         return{};
+     }
+     str+=c;
+     if(move->children[c-' '])
+     {
+         move=move->children[c-' '];
+         
+         return {move->v[2].second,move->v[1].second,move->v[0].second};
+         
+     }
+     return {};
+   }
