@@ -1,0 +1,36 @@
+string dfs(int x1, int y1, int x, int y,vector<vector<int>>&vis){
+    vis[x1][y1]=1;
+    if (x1 == x && y1 == y) return "YES";
+    int delrow[8]= {-1,-1,-1,0,1,1,1,0};
+    int delcol[8]= {-1,0,1,1,1,0,-1,-1};
+   
+    for (int i=0; i<8; i++){
+        int xt=x1+delrow[i];
+        int yt=y1+delcol[i];
+       
+        if (xt >= 0 && xt <=x && yt >=0 && yt <=y  && vis[xt][yt] == 0){
+            if (dfs(xt,yt, x, y, vis)=="YES") return "YES";
+        }
+    }
+    return "NO";
+}
+
+string Solution::solve(int x, int y, int n, int r, vector<int> &E, vector<int> &F) {
+    vector<vector<int>> vis(x+1,vector<int>(y+1,0));
+   
+    for (int i=0; i<=x; i++){
+        int x1=i;
+        for (int j=0; j<=y; j++){
+            int y1=j;
+            for (int k=0; k< E.size(); k++){
+                int xc=E[k];
+                int yc=F[k];
+                if ((x1-xc)*(x1-xc) + (y1-yc)*(y1-yc)<=r*r){
+                    vis[x1][y1]=-1;
+                }
+            }
+        }
+    }
+    if (vis[x][y] == -1) return "NO";
+    return dfs(0,0,x,y,vis);
+}
