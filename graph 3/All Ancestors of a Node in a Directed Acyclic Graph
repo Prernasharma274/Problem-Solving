@@ -1,0 +1,24 @@
+class Solution {
+public:
+    void fun(vector<vector<int>>&edges,int i,int p,vector<vector<int>>&result,vector<bool>&vis){
+        vis[p]=1;
+        for(auto &it:edges[p])
+        {
+            if(vis[it]==NULL)
+            {
+                result[it].push_back(i);
+                fun(edges,i,it,result,vis);
+            }
+        }        
+    }
+    vector<vector<int>> getAncestors(int n, vector<vector<int>>& edges) {
+        vector<vector<int>>result(n),graph(n);
+        for(auto &v:edges) graph[v[0]].push_back(v[1]);
+        for(int i=0;i<n;i++)
+        {
+            vector<bool>vis(n);
+            fun(graph,i,i,result,vis);
+        }
+        return result;
+    }
+};
