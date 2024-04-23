@@ -1,0 +1,56 @@
+class Solution {
+public:
+    vector<pair<int,vector<int>>>dp;
+    bool cycle=false;
+    void fun(vector<vector<int>>&graph,int node,string &s){
+        for(auto &ch:graph[node])
+        {
+            if(cycle)return;
+            if(dp[ch].first==2)
+            {
+                cycle=true;
+                return;
+            }
+            if(dp[ch].first==0)
+            {
+                dp[ch].first=2;
+                fun(graph,ch,s);
+                dp[ch].first=1;
+            }
+            for(int i=0;i<26;i++)
+            {
+                dp[node].second[i]=max(dp[node].second[i],dp[ch].second[i]);
+            } 
+        }
+        dp[node].second[s[node]-'a']++;
+    }
+    int largestPathValue(string colors, vector<vector<int>>& edges) {
+        int n = colors.size();
+        vector<vector<int>>graph(n);
+        vector<bool>start(n,1);
+        for(auto &it:edges)
+        {
+            graph[it[0]].push_back(it[1]);
+            start[it[1]]=0;
+        }
+        dp.assign(n,{0,vector<int>(26,0)});
+        cycle=false;
+        int ans=-1;
+        for(int i=0;i<n;i++)
+        {
+            if(start[i])
+            {
+                dp[i].first=2;
+                fun(graph,i,colors);
+                if(cycle)return -1;
+                dp[i].first=1;
+                ans=max(*max_element(dp[i].second.begin(),dp[i].second.end()),ans);
+            }
+        }
+        for(int i=0;i<n;i++)
+        {
+          if(dp[i].first==0) return -1;
+        }
+        return ans;
+    }
+};
