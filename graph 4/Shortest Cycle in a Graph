@@ -1,0 +1,45 @@
+class Solution {
+public:
+    int findShortestCycle(int n, vector<vector<int>>& edges) 
+    {
+        vector<int> adj[n];
+        for(int i=0;i<edges.size();i++)
+        {
+            int u=edges[i][0];
+            int v=edges[i][1];
+            adj[u].push_back(v);
+            adj[v].push_back(u);
+        }
+        int shortestCycle=INT_MAX;
+        for(int i=0;i<n;i++)
+        {
+            queue<int>q;
+            q.push(i);
+            vector<int> parent(n,-1);
+            vector<int> dist(n,1e9);
+            dist[i]=0;
+            while(!q.empty())
+            {
+                int size=q.size();
+                while(size--)
+                {
+                    int node=q.front();
+                    q.pop();
+                    for(auto &it:adj[node])
+                    {
+                        if(dist[it]==1e9)
+                        {
+                            dist[it]=1+dist[node];
+                            parent[it]=node;
+                            q.push(it);
+                        }
+                        else if(parent[it]!=node && parent[node]!=it){
+                            shortestCycle = min(shortestCycle,1+dist[node]+dist[it]);
+                        }
+                    }
+                }
+            }
+        }
+        return shortestCycle == INT_MAX ? -1 : shortestCycle;
+    }
+};
