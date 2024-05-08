@@ -39,3 +39,23 @@
     }
 
 //binary search
+class Solution {
+public:
+    int longestCommonSubsequence(string text1, string text2) {
+        vector<int> dp;
+        unordered_map<char,vector<int>> d;
+        for (int i=0; i<text2.size();i++) {
+            d[text2[i]].push_back(i);
+        }
+        for (char c:text1) {
+            if (d.count(c)) {
+                for (int i=d[c].size()-1;i>=0;i--) {
+                    int ins=lower_bound(dp.begin(), dp.end(),d[c][i])-dp.begin();
+                    if (ins==dp.size()) dp.push_back(d[c][i]);
+                    else dp[ins]=d[c][i];
+                }
+            }
+        }
+        return dp.size();
+    }
+};
