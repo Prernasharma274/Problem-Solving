@@ -1,0 +1,41 @@
+//recursion + memoization
+    int lcs_memo(string s, string t, vector<vector<int>> &dp) {
+        int m=s.size();
+        int n=t.size();    
+        if (m==0 || n==0) return 0;
+        if (dp[m][n] != -1)
+            return dp[m][n];
+        int ans;
+        if (s[0] == t[0])
+            ans = 1 + lcs_memo(s.substr(1), t.substr(1), dp);
+        else {
+            int a = lcs_memo(s.substr(1), t, dp);
+            int b = lcs_memo(s, t.substr(1), dp);
+            int c = lcs_memo(s.substr(1), t.substr(1), dp);
+            ans = max(a, max(b, c));
+        }
+        return dp[m][n] = ans; 
+    }
+
+//tabulation
+    int lcs_dp(string s,string t){
+        int m=s.size();
+        int n=t.size();
+        vector<vector<int>> dp(n=1,0);
+        for(int i=0;i<=n;i++) dp[0][i]=0;
+        for(int j=1;j<=m;j++) dp[j][0]=0;
+        for(int i=1;i<=m;i++){
+            for(int j=1;j<=n;j++){
+                if(s[m-i] == t[n-j]) dp[i][j]=1+dp[i-1][j-1];
+                else{
+                    int a=dp[i-1][j];
+                    int b=dp[i][j-1];
+                    int c=dp[i-1][j-1];
+                    dp[i][j]=max(max(a,b),c);
+                }
+            }
+        }
+        return dp[m][n];
+    }
+
+//binary search
