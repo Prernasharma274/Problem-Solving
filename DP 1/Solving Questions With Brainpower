@@ -1,0 +1,18 @@
+class Solution {
+    long long check(vector<vector<int>> & questions, int ci, vector<long long>& dp)
+    {
+        if(ci >= questions.size())
+            return 0;
+        if(dp[ci] != -1)
+            return dp[ci];
+        long long ntpick = check(questions,ci+1,dp);
+        long long pick = questions[ci][0] + check(questions,ci+questions[ci][1]+1,dp);
+        return dp[ci] = max(pick,ntpick);
+    }
+public:
+    long long mostPoints(vector<vector<int>>& questions) {
+        vector<long long> dp(questions.size() , -1);
+        long long pick = check(questions,0,dp);
+        return *max_element(dp.begin(),dp.end());
+    }
+};
