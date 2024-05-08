@@ -1,0 +1,53 @@
+class Solution {
+public:
+    int MOD=1e9+7;
+    long fun(string &s, int i, int n, vector<int>&dp){
+        if(i==n) return 1;
+        if(s[i]=='0') return 0;
+        if(dp[i]!=-1) return dp[i];
+        long res=0;
+        if(s[i]=='*'){
+            res= (res+ 9*fun(s,i+1,n,dp))%MOD;
+            if(i<n-1){
+                if(s[i+1]=='*'){
+                    res=(res+15*fun(s,i+2,n,dp))%MOD;
+                }
+                else if(s[i+1]<='6'){
+                    res=(res+2*fun(s,i+2,n,dp))%MOD;
+                }
+                else{
+                    res=(res+fun(s,i+2,n,dp))%MOD;
+                }
+            }
+        }
+        else{
+            res = (res + fun(s,i+1,n,dp))%MOD;
+            if(s[i]=='1'){
+                if(i<n-1){
+                    if(s[i+1]=='*'){
+                        res = (res+ 9*fun(s,i+2,n,dp))%MOD;
+                    }
+                    else{
+                        res=(res+fun(s,i+2,n,dp))%MOD;
+                    }
+                }
+            }
+            else if(s[i]=='2'){
+                if(i<n-1){
+                    if(s[i+1]=='*'){
+                        res=(res+6*fun(s,i+2,n,dp))%MOD;
+                    }
+                    else if(s[i+1]<='6'){
+                        res=(res+fun(s,i+2,n,dp))%MOD;
+                    }
+                }
+            }
+        }
+        return dp[i]=res;
+    }   
+    int numDecodings(string s) {
+        int n=s.size();
+        vector<int> dp(n, -1);
+        return fun(s,0,n,dp);
+    }
+};
