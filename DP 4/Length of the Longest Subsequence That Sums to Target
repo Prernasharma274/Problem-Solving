@@ -1,0 +1,15 @@
+class Solution {
+public:
+    int lengthOfLongestSubsequence(vector<int>& nums, int target) {
+        vector<int> dp(target+1,-11);
+        dp[0]=0;
+        for (auto z : nums) {
+            for (int i=target; i>=z;--i) {
+                if (dp[i-z] != -11) {
+                    dp[i]=max(dp[i],dp[i-z]+1);
+                }
+            }
+        }
+        return max(dp[target],-1);
+    }
+};
